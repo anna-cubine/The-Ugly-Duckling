@@ -1,0 +1,30 @@
+# Ignore standard Unity folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+MemoryCaptures/
+
+# Ignore auto-generated Visual Studio/JetBrains Rider files
+*.csproj
+*.sln
+*.suo
+*.vscode/
+*.user
+*.pidb
+*.booproj
+*.svd
+*.unityproj
+*.sln.dotSettings
+*.ide/
+
+# Ignore generated files from Unity
+*.pidb
+*.pdb
+*.mdb
+
+# Ignore Cache files
+/[Cc]ache/
