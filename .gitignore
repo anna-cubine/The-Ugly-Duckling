@@ -1,3 +1,7 @@
+# Ignore all macOS system files
+.DS_Store
+__MACOSX/
+
 # Ignore standard Unity folders
 [Ll]ibrary/
 [Tt]emp/
@@ -28,3 +32,6 @@ MemoryCaptures/
 
 # Ignore Cache files
 /[Cc]ache/
+
+# Ignore Visual Studio files
+.vs/
