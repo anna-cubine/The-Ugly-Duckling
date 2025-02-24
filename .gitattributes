@@ -1,0 +1,5 @@
+# Ensure Unity .meta files always use LF (prevents Windows/macOS conflicts)
+*.meta text eol=lf
+
+# Normalize all text files (prevents Windows/macOS conflicts)
+* text=auto
