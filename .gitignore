@@ -35,3 +35,7 @@ MemoryCaptures/
 
 # Ignore Visual Studio files
 .vs/
+
+# Ignore TextMesh Pro extras
+/Assets/TextMesh Pro/Examples\ \&\ Extras/
+/Assets/TextMesh Pro/Shaders/
