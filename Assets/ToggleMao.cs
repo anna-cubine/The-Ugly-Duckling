@@ -9,6 +9,12 @@ public class Toggle : MonoBehaviour
     private bool isOverlayActive = false;
     public TextMeshProUGUI overlayText;
 
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -73,9 +79,9 @@ public class Toggle : MonoBehaviour
                 } else {
                     int roomValue = adjacencyMatrix[i -1, j - 1]; //Need to do this because first row and column are not part of matrix
                     //If the player is at the current room, that number is blue on the adj matrix
-                    if (i-1 == RoomManager.Instance.currentRoom && j-1 == RoomManager.Instance.currentColumn)
+                    if (i-1 == currentRoom)
                     {
-                        displayText += $"<color=blue>{adjacencyMatrix[i, j]}  </color>";
+                        displayText += $"<color=blue>{adjacencyMatrix[i-1, j-1]}  </color>";
                     //This will show green for past rooms visited
                     } else if (roomValue == 1 && RoomManager.Instance.HasTraveled(i-1, j-1))
                     {

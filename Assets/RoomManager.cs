@@ -11,17 +11,18 @@ public class RoomManager : MonoBehaviour
     //Adj matrix to test on
     private int[,] adjacencyMatrix =
     {
-        { 0, 1, 1, 0, 0 },
-        { 1, 0, 1, 1, 0 },
-        { 1, 1, 0, 0, 1 },
-        { 0, 1, 0, 0, 1 },
-        { 0, 0, 1, 1, 0 }
+        { 0, 1, 0, 1 },
+        { 1, 0, 1, 0 },
+        { 0, 1, 0, 1 },
+        { 1, 0, 1, 0 }
     };
 
     private HashSet<(int, int)> traveledPaths = new HashSet<(int, int)> ();
 
     public int currentRoom = 0; //Starting at room 0
     public int currentColumn;
+
+    public TextMeshProUGUI[] doorLabels;
 
     private void Awake()
     {
@@ -53,15 +54,17 @@ public class RoomManager : MonoBehaviour
     //Checking if the player can move to that room or now
     public bool IsValidMove(int chosenRoom)
     {
-        return adjacencyMatrix[currentRoom, chosenRoom] == 1;
+        return adjacencyMatrix[currentRoom, chosenRoom-1] == 1;
     }
 
     //Moving the player to the new room and updating everything
     public bool MoveToRoom(int newRoom)
     {
-        if (adjacencyMatrix[currentRoom, newRoom] == 1)
+        //Debug.Log("current " + currentRoom);
+        //Debug.Log("new "+newRoom);
+        if (IsValidMove(newRoom))
         {
-            currentRoom = newRoom;
+            currentRoom = newRoom-1;
             UpdateUI();
             return true;
         }
@@ -82,16 +85,38 @@ public class RoomManager : MonoBehaviour
     // Update is called once per frame
     void UpdateUI()
     {
-        int buttonIndex = 0;
+        int labelIndex = 0;
+
+        for (int i = 0; i < doorLabels.Length; i++)
+            doorLabels[i].text = ""; //Clear everything first
+
+        //Need this for ensuring correct button order in the array
+        int[] correctButtonOrder = { 0, 1, 2, 3 };
+
+        //Getting all numbers except the current room number to display on doors
         for (int i = 0; i< adjacencyMatrix.GetLength(1); i++)
         {
-            if (adjacencyMatrix[currentRoom, i] == 1 && i != currentRoom)
+            if (i != currentRoom)
             {
-                buttons[buttonIndex].gameObject.SetActive(true);
-                buttons[buttonIndex].SetDestinationRoom(i);
-                buttons[buttonIndex].UpdateDoorLabel(i); //Update onto the door
-                buttonIndex++;
+                if(labelIndex < doorLabels.Length)
+                {
+                    int destRoom = i + 1; //Converting from 0 based to one based
+
+                    doorLabels[labelIndex].text = destRoom.ToString();
+
+                    //Set corresponding button destination room
+                    int buttonIndex = correctButtonOrder[labelIndex];
+                    buttons[buttonIndex].SetDestinationRoom(destRoom);
+
+                    Debug.Log("DOOR LABEL " + labelIndex + " -> Room " + destRoom);
+                    Debug.Log("BUTTON " + labelIndex + " assigned to Room " + (buttons[labelIndex].getDestinationRoom()));
+
+                    labelIndex++;
+
+                    //Debug.Log("Button " + buttons[i] + " leads to " + destRoom);
+                }
             }
         }
+
     }
 }
