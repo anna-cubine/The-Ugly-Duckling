@@ -15,11 +15,10 @@ public class CubeButton : MonoBehaviour
     public TextMeshProUGUI doorText; //For the text on each door.
 
     public GameObject door;
-    public GameObject[] walls;
 
     private int destinationRoom; //Room that pressed button will lead to
 
-    //private UnityEngine.Color newColor = new UnityEngine.Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+    private Renderer wallRenderer;
 
     //Room that the player is trying to go to
     public void SetDestinationRoom(int room)
@@ -37,22 +36,15 @@ public class CubeButton : MonoBehaviour
         //Getting instances of current room and current available rooms to go to
         int currentRow = RoomManager.Instance.currentRoom;
         int currentCol = RoomManager.Instance.currentColumn;
-
-        Debug.Log("Destination "+destinationRoom);
-        Debug.Log("Door Text " + doorText);
         
         if (RoomManager.Instance.MoveToRoom(destinationRoom))
         {
+            //bug.Log("Destination " + destinationRoom);
             //Upadting map
             Toggle.Instance.setMap();
             //Using a coroutine so I can wait some time before switching back to the original color
             StartCoroutine(OpenDoor(door));
             StartCoroutine(ChangeColor());
-            UnityEngine.Color newColor = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            for (int i = 0; i < walls.Length; i++)
-            {
-                walls[i].GetComponent<Renderer>().material.color = newColor;
-            }
         }
     }
 

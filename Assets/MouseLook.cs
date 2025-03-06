@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 // MouseLook rotates the transform based on the mouse delta.
@@ -30,37 +31,78 @@ public class MouseLook : MonoBehaviour {
 	public float maximumVert = 45.0f;
 
 	private float verticalRot = 0;
+
+	private bool isCursorLocked = false;
 	
 	void Start() {
 		// Make the rigid body not change rotation
+		/*
 		Rigidbody body = GetComponent<Rigidbody>();
 		if (body != null) {
 			body.freezeRotation = true;
 		}
 		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+		Cursor.visible = false;*/
+		UnlockCursor();
 	}
 
 	void Update() {
-		if (axes == RotationAxes.MouseX) {
-			transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			ToggleCursorLock();
 		}
-		else if (axes == RotationAxes.MouseY) {
-			verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
-			verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
+		if (isCursorLocked)
+		{
+			if (axes == RotationAxes.MouseX)
+			{
+				transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
+			}
+			else if (axes == RotationAxes.MouseY)
+			{
+				verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
+				verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
 
-			float horizontalRot = transform.localEulerAngles.y;
+				float horizontalRot = transform.localEulerAngles.y;
 
-			transform.localEulerAngles = new Vector3(verticalRot, horizontalRot, 0);
+				transform.localEulerAngles = new Vector3(verticalRot, horizontalRot, 0);
+			}
+			else
+			{
+				verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
+				verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
+
+				float delta = Input.GetAxis("Mouse X") * sensitivityHor;
+				float horizontalRot = transform.localEulerAngles.y + delta;
+
+				transform.localEulerAngles = new Vector3(verticalRot, horizontalRot, 0);
+			}
 		}
-		else {
-			verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
-			verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
+	}
 
-			float delta = Input.GetAxis("Mouse X") * sensitivityHor;
-			float horizontalRot = transform.localEulerAngles.y + delta;
+	public void LockCursor()
+	{
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+		isCursorLocked = true;
+	}
 
-			transform.localEulerAngles = new Vector3(verticalRot, horizontalRot, 0);
+	public void UnlockCursor()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		isCursorLocked = false;
+	}
+
+	public void ToggleCursorLock()
+	{
+		if (isCursorLocked)
+		{
+			UnlockCursor();
+		}
+		else
+		{
+			LockCursor();
 		}
 	}
 }

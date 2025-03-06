@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 
@@ -78,14 +78,15 @@ public class Toggle : MonoBehaviour
                     displayText += $"{i}  ";
                 } else {
                     int roomValue = adjacencyMatrix[i -1, j - 1]; //Need to do this because first row and column are not part of matrix
-                    //If the player is at the current room, that number is blue on the adj matrix
-                    if (i-1 == currentRoom)
-                    {
-                        displayText += $"<color=blue>{adjacencyMatrix[i-1, j-1]}  </color>";
                     //This will show green for past rooms visited
-                    } else if (roomValue == 1 && RoomManager.Instance.HasTraveled(i-1, j-1))
+                    if (roomValue == 1 && RoomManager.Instance.HasTraveled(i - 1, j - 1))
                     {
-                        displayText += $"<color=green>{matrix[i, j]}  </color";
+                        displayText += $"<color=green>{adjacencyMatrix[i - 1, j - 1]}  </color>";
+                    //If the player is at the current room, that number is blue on the adj matrix
+                    }
+                    else if (i - 1 == currentRoom)
+                    {
+                        displayText += $"<color=blue>{adjacencyMatrix[i - 1, j - 1]}  </color>";
                     }
                     else
                     {

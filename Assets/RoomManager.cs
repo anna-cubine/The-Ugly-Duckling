@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
@@ -7,6 +7,8 @@ public class RoomManager : MonoBehaviour
     public static RoomManager Instance;
 
     public CubeButton[] buttons;
+
+    public GameObject[] walls;
 
     //Adj matrix to test on
     private int[,] adjacencyMatrix =
@@ -23,6 +25,18 @@ public class RoomManager : MonoBehaviour
     public int currentColumn;
 
     public TextMeshProUGUI[] doorLabels;
+
+    public GameOverScreen gameOverScreen;
+
+    //Since there are only four rooms, a room is assigned to one of these four colors
+    //First color is the same as the color before the game starts for consistancy.
+    private UnityEngine.Color[] roomColors = new UnityEngine.Color[]
+    {
+        new UnityEngine.Color(0xA6 / 255f, 0x86 / 255f, 0xE4 / 255f),
+        UnityEngine.Color.green,
+        UnityEngine.Color.blue,
+        UnityEngine.Color.yellow
+    };
 
     private void Awake()
     {
@@ -60,12 +74,13 @@ public class RoomManager : MonoBehaviour
     //Moving the player to the new room and updating everything
     public bool MoveToRoom(int newRoom)
     {
-        //Debug.Log("current " + currentRoom);
-        //Debug.Log("new "+newRoom);
         if (IsValidMove(newRoom))
         {
-            currentRoom = newRoom-1;
+            traveledPaths.Add((currentRoom, newRoom - 1));
+            currentRoom = newRoom - 1;
             UpdateUI();
+            CheckWinCondition();
+            ChangeWallColor(newRoom-1);
             return true;
         }
         else
@@ -76,10 +91,41 @@ public class RoomManager : MonoBehaviour
         }
     }
 
+    //Change walls color when moving to a new room
+    public void ChangeWallColor(int roomIndex)
+    {
+        UnityEngine.Color newColor = roomColors[roomIndex];
+
+        for (int i = 0; i < walls.Length; i++)
+        {
+            walls[i].GetComponent<Renderer>().material.color = newColor;
+        }
+    }
+
     //Checking if the player has gone to another room before for the map to show green for past visited rooms
     public bool HasTraveled(int from, int to)
     {
         return traveledPaths.Contains((from, to));
+    }
+
+    public void CheckWinCondition()
+    {
+        int totalPaths = 0;
+
+        for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
+            {
+                if (adjacencyMatrix[i, j] != 1)
+                {
+                    totalPaths++;
+                }
+            }
+        }
+        if (traveledPaths.Count == totalPaths)
+        {
+            gameOverScreen.TriggerGameOver(win: true);
+        }
     }
 
     // Update is called once per frame
@@ -108,8 +154,8 @@ public class RoomManager : MonoBehaviour
                     int buttonIndex = correctButtonOrder[labelIndex];
                     buttons[buttonIndex].SetDestinationRoom(destRoom);
 
-                    Debug.Log("DOOR LABEL " + labelIndex + " -> Room " + destRoom);
-                    Debug.Log("BUTTON " + labelIndex + " assigned to Room " + (buttons[labelIndex].getDestinationRoom()));
+                    //Debug.Log("DOOR LABEL " + labelIndex + " -> Room " + destRoom);
+                    //Debug.Log("BUTTON " + labelIndex + " assigned to Room " + (buttons[labelIndex].getDestinationRoom()));
 
                     labelIndex++;
 
