@@ -36,5 +36,6 @@ MemoryCaptures/
 # Ignore Visual Studio files
 .vs/
 
-# Ignore TextMesh Pro extras
-/Assets/TextMesh Pro/Examples\ \&\ Extras/
+# Ignore plastic files
+/PlasticSCM/
+/.plastic/

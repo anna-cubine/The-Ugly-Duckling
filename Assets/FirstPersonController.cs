@@ -47,10 +47,6 @@ public class FirstPersonController : MonoBehaviour
 
         //Rotate player body based on mouse x
         transform.Rotate(Vector3.up * mouseX);
-
-        float moveX = Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime;
-        float moveZ = Input.GetAxis("Vertical") * movementSpeed * Time.deltaTime;
-        transform.Translate(moveX, 0f, moveZ);
     }
 
     public void LockCursor()
