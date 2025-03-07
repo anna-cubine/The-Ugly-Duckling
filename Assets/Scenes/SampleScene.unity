@@ -535,19 +535,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This is a learning game designed to teach you (the player) graph navigation
+  m_text: "This is a learning game designed to teach you (the player) graph navigation
     using adjacency matrices. Click the buttons in front of you to navigate to other
-    rooms and collect the pages. Be careful though, Navigate to the wrong room and
-    you lose a life. Lose all your lives or fail to collect all the pages before
-    the time runs out and you must restart.
-
-
-    You better hurry, the horrors of
-    the duckling are hot on your tail.
-
-
-    NOTE: If you have restarted the game
-    but your cursor is locked, press the ESC button.'
+    rooms. \n\nTo determine which room you must navigate to next, press the 'X' button
+    on your keyboard to view the adjacency matrix. The '1's represent rooms you can
+    navigate to and the zeros represent rooms you cannot navigate to from your current
+    room. The row in blue is the number room you are currently in. If you have visited
+    a room, its corresponding '1' will turn green in the matrix. \n\nTo win, visit
+    all the rooms before the time runs out\n\nYou better hurry, the horrors of the
+    duckling are hot on your tail."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -574,8 +570,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14.5
-  m_fontSizeBase: 14.5
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
