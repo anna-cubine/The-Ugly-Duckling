@@ -70,8 +70,10 @@ public class Behavior : MonoBehaviour
     }*/
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Colission");
         if (collision.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Game over triggered");
             //finds the gameover script and triggers the fade
             GameOverScreen gameOverScreen = FindAnyObjectByType<GameOverScreen>();
             gameOverScreen.TriggerGameOver();
